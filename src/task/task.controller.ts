@@ -12,7 +12,10 @@ import {
 import { TaskService } from './task.service';
 import { Task } from '@prisma/client';
 import { throwError } from 'rxjs';
+import { CreateTaskDto, TaskDto } from 'src/dtos/task.dto';
+import { ApiTags, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('Tasks') // Tag for this controller
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -23,7 +26,13 @@ export class TaskController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new task' })
+  @ApiBody({ type: CreateTaskDto  })
+  @ApiResponse({ status: 201, description: 'Task created successfully', type: TaskDto })
+  @ApiResponse({ status: 404, description: 'Task does not exist' })
   async createTask(@Body() data: Task) {
+    let object = data
+    console.log(data);
     const taskfound = await this.taskService.createTask(data);
     if (!taskfound) throw new NotFoundException('task does not exist')
     return taskfound;

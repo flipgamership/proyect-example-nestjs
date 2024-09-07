@@ -14,5 +14,59 @@ datasource db {
 model Task {
   id Int @id @default(autoincrement())
   title String
-  description String
+  description String?
+  status String?
+  date DateTime?
 }
+
+model Diary {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  status String
+  date  DateTime
+  start_time String
+  end_time String? 
+}
+
+model Inventory {
+  id Int @id @default(autoincrement())
+  title_product String
+  description_product String
+  image_product String
+  price_product String
+  quantity Int
+  min_alert_storages Int
+  codeBar_product String
+  extra_product_information String
+  internal_product_information String
+
+  InventoryHistorySales InventoryHistorySales[]
+  shippingProduct shippingProducts[]
+}
+
+model InventoryHistorySales {
+  id Int @id @default(autoincrement())
+  product_id Int
+  product Inventory @relation(fields: [product_id], references: [id])
+  quantity_sale Int
+  product_status String
+  product_guie String?
+  product_extra_information String?
+
+}
+
+model shippingProducts {
+  id Int @id @default(autoincrement())
+  product_id Int
+  product Inventory @relation(fields: [product_id], references: [id])
+  guie String?
+  shipping_company String?
+  date_shipping DateTime?
+  direction_shipping String
+  info_shipping String?
+  status_shipping String?
+}
+
+
+

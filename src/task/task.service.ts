@@ -13,7 +13,7 @@ export class TaskService {
   async getTasksById(id: number): Promise<Task> {
     return this.prisma.task.findUnique({ where: { id: id } });
   }
-
+    
   async createTask(data: Task): Promise<Task> {
     return this.prisma.task.create({
       data,
